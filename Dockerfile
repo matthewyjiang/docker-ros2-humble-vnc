@@ -43,7 +43,7 @@ RUN apt-get update && \
         tigervnc-standalone-server tigervnc-common \
         supervisor wget curl gosu git sudo python3-pip tini \
         build-essential vim sudo lsb-release locales \
-        net-tools nvim \
+        net-tools neovim \
         bash-completion tzdata terminator \
         dos2unix && \
     apt-get autoclean && \

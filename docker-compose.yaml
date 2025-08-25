@@ -1,4 +1,4 @@
-srvices:
+services:
   ros-humble-vnc:
     build:
       context: .
