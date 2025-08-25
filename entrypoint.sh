@@ -69,7 +69,7 @@ user=root
 [program:vnc]
 command=gosu '$USER' bash '$VNCRUN_PATH'
 [program:novnc]
-command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5901"
+command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 6080 localhost:5901"
 EOF
 
 # colcon
