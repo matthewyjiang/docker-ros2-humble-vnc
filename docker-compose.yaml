@@ -8,9 +8,7 @@ services:
     security_opt:
       - seccomp=unconfined
     shm_size: "1g"          # helps RViz/Gazebo stability
-    ports:
-      - "6080:80"           # noVNC in the browser
-      - "5901:5901"         # (optional) direct VNC clients
+    network_mode: "host"
     volumes:
       - ros-volume:/home/ubuntu/ros_ws
     stdin_open: true
