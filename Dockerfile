@@ -22,33 +22,21 @@ LABEL maintainer="matthewyjiang<matthewyjiang@gmail.com>"
 
 SHELL ["/bin/bash", "-c"]
 
-# Upgrade OS
-RUN apt-get update -q && \
-    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
-    apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
-
 # Install Ubuntu Mate desktop
 RUN apt-get update -q && \
+    apt-get upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        ubuntu-mate-desktop && \
-    apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/*
-
-# Add Package
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        ubuntu-mate-desktop \
         tigervnc-standalone-server tigervnc-common \
         supervisor wget curl gosu git sudo python3-pip tini \
         build-essential vim sudo lsb-release locales \
-        net-tools neovim \
+        net-tools neovim iputils-ping \
         bash-completion tzdata terminator \
         dos2unix && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
+
 
 # noVNC and Websockify
 RUN git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc
@@ -99,10 +87,19 @@ RUN rosdep update
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     apt-get update -q && \
     apt-get install -y \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-ros-ign && \
+    ros-${ROS_DISTRO}-gazebo-* && \
     rm -rf /var/lib/apt/lists/*; \
     fi
+
+RUN apt-get update -q && \
+    apt-get install -y \
+    ros-${ROS_DISTRO}-cartographer \
+    ros-${ROS_DISTRO}-cartographer-ros \
+    ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-nav2-bringup && \
+    apt-get autoclean && \
+    apt-get autoremove && \
+    rm -rf /var/lib/apt/lists/*
 
 # Enable apt-get completion after running `apt-get update` in the container
 RUN rm /etc/apt/apt.conf.d/docker-clean
