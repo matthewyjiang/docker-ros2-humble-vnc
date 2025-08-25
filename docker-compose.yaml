@@ -1,0 +1,21 @@
+srvices:
+  ros-humble-vnc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ros-humble-vnc
+    # Humble image needs this to launch correctly
+    security_opt:
+      - seccomp=unconfined
+    shm_size: "1g"          # helps RViz/Gazebo stability
+    ports:
+      - "6080:80"           # noVNC in the browser
+      - "5901:5901"         # (optional) direct VNC clients
+    volumes:
+      - ros-volume:/home/ubuntu/ros_ws
+    stdin_open: true
+    tty: true
+
+volumes:
+  ros-volume:
+    external: true
